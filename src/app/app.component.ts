@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
 
+import { DATA } from './data';
+import { Person } from './models';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  standalone: false,
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.css'],
+  standalone: false
 })
 export class AppComponent {
-  title = 'my-test-app';
+  readonly people: Person[] = DATA;
+
+  doSomething(person: Person) {
+    console.log('Selected person: ', person);
+  }
 }
