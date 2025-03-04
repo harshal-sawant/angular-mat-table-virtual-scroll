@@ -8,7 +8,7 @@ export class ResizeColumnDirective implements OnInit {
   @Input("resizeColumn") resizable!: boolean;
 
   @Input() index!: number;
-
+  
   private startX!: number;
 
   private startWidth!: number;
@@ -18,6 +18,9 @@ export class ResizeColumnDirective implements OnInit {
   private table!: HTMLElement;
 
   private pressed!: boolean;
+
+  private initialColumnWidth = 0;
+  private initialTableWidth = 0;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
     this.column = this.el.nativeElement;
@@ -35,6 +38,8 @@ export class ResizeColumnDirective implements OnInit {
       this.renderer.listen(resizer, "mousedown", this.onMouseDown);
       this.renderer.listen(this.table, "mousemove", this.onMouseMove);
       this.renderer.listen("document", "mouseup", this.onMouseUp);
+      
+      this.initialTableWidth = this.table.offsetWidth;
     }
   }
 
@@ -42,6 +47,7 @@ export class ResizeColumnDirective implements OnInit {
     this.pressed = true;
     this.startX = event.pageX;
     this.startWidth = this.column.offsetWidth;
+    this.initialColumnWidth = this.column.offsetWidth;
   };
 
   onMouseMove = (event: MouseEvent) => {
@@ -56,6 +62,10 @@ export class ResizeColumnDirective implements OnInit {
       const tableCells = Array.from(this.table.querySelectorAll(".mat-row")).map(
         (row: any) => row.querySelectorAll(".mat-cell").item(this.index)
       );
+
+      const delta = this.column.offsetWidth - this.initialColumnWidth;
+
+      this.renderer.setStyle(this.table, "width", `${this.initialTableWidth + delta}px`);
 
       // Set table header width
       this.renderer.setStyle(this.column, "width", `${width}px`);
