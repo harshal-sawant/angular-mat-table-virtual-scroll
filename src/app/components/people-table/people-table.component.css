@@ -13,8 +13,14 @@
       text-overflow: ellipsis;
     }
   }
+
+  .mat-mdc-header-row {
+    position: sticky;
+    top: 0;
+  }
+
   .mat-mdc-header-cell {
-    position: relative;      
+     position: relative;
     &:not(:last-child) {
       .resize-holder {
         cursor: col-resize;
